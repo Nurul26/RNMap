@@ -1,0 +1,96 @@
+import { call, fork, put, select, takeLatest } from 'redux-saga/effects';
+import api from '../services/getLocationApi';
+import searchHistoryApi from '../services/searchHistoryApi';
+import { SEARCH_PLACE, GET_HISTORY, SAVE_HISTORY, } from '../actions/types';
+import {
+    searchPlaceSuccess,
+    searchPlaceFailed,
+    saveHistorySuccess,
+    saveHistoryFailed,
+    getHistorySuccess,
+    getHistoryFailed,
+} from '../actions/place';
+
+function* workerGetLocationSaga(params) {
+    try {
+        const response = yield call(api.getLocation);
+        if (response.status === 200) {
+            yield put(searchPlaceSuccess(response.data));
+        } else {
+            if (response) {
+                yield put(searchPlaceFailed(response));
+            } else {
+                if (response.status) {
+                }
+                yield put(searchPlaceFailed(response.data));
+            }
+        }
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// function* workerGetHistorySaga(params) {
+//     try {
+//         const response = yield call(searchHistoryApi.getHistory);
+//         if (response.status === 200) {
+//             yield put(getHistorySuccess(response.data));
+//         } else {
+//             if (response) {
+//                 yield put(getHistoryFailed(response));
+//             } else {
+//                 if (response.status) {
+//                 }
+//                 yield put(getHistoryFailed(response.data));
+//             }
+//         }
+//         console.log(response);
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+// function* workerSaveHistorySaga(params) {
+//     try {
+//         const state = yield select();
+//         const duplicatedData = yield state.places.searchHistory.filter(data => {
+//             return data.name == params.payload.name;
+//         });
+
+//         if (duplicatedData == '') {
+//             const postResponse = yield call(searchHistoryApi.saveHistory, params.payload);
+//             console.log('post response', JSON.stringify(postResponse));
+
+//             if (postResponse.status === 201) {
+//                 yield put(saveHistorySuccess([...state], postResponse.data));
+//                 console.log('success');
+//             } else {
+//                 yield put(saveHistoryFailed(postResponse));
+//             }
+//         } else {
+//             yield put(saveHistoryFailed('Duplicated data.'));
+//         }
+
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+function* getLocationSaga() {
+    yield takeLatest(SEARCH_PLACE, workerGetLocationSaga);
+}
+
+// function* getHistorySaga() {
+//     yield takeLatest(GET_HISTORY, workerGetHistorySaga);
+// }
+
+// function* saveHistorySaga() {
+//     yield takeLatest(SAVE_HISTORY, workerSaveHistorySaga);
+// }
+
+export const watcherLocation = [
+    fork(getLocationSaga),
+    // fork(getHistorySaga),
+    // fork(saveHistorySaga),
+];
