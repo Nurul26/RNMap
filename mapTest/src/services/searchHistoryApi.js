@@ -1,6 +1,6 @@
 import apisauce from 'apisauce';
 
-const createHistory = (baseURL = 'https://63025017c6dda4f287b79680.mockapi.io/searchHistory/') => {
+const createHistory = (baseURL = 'https://6304394b761a3bce77e46db7.mockapi.io/api/search/searchHistory') => {
   const api = apisauce.create({
     baseURL,
     headers: {
@@ -15,6 +15,7 @@ const createHistory = (baseURL = 'https://63025017c6dda4f287b79680.mockapi.io/se
 
   const getHistory = async() => await api.get('/');
   const saveHistory = async(place) => await api.post('/', place);
+  const removeHistory = async(history) => await api.delete('/' + history.id);
 
   return {
     api,
@@ -23,6 +24,7 @@ const createHistory = (baseURL = 'https://63025017c6dda4f287b79680.mockapi.io/se
     removeAuthToken,
     getHistory,
     saveHistory,
+    removeHistory
   };
 };
 
