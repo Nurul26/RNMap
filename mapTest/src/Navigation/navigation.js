@@ -9,8 +9,8 @@ const Stack = createNativeStackNavigator();
 const Appstack = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Search' screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Search" component={Search} />
+      <Stack.Navigator initialRouteName='Search' >
+        <Stack.Screen name="Search" component={Search} screenOptions={{ headerShown: false }}/>
         <Stack.Screen name="Map" component={Map} />
 
       </Stack.Navigator>

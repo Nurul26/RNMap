@@ -3,7 +3,9 @@ import Appstack from './src/Navigation/navigation';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/es/integration/react';
 import {store, persistor} from './src/config/ReduxStore';
+import { enableLatestRenderer } from 'react-native-maps';
 
+enableLatestRenderer();
 const App = () => {
   return (
     <React.Fragment>
